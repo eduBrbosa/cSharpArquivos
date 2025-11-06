@@ -6,28 +6,37 @@ class Program
     static void Main(string[] args)
     {
         var enderecoArquivo = "contas.txt";
-        var numBytesLidos = -1;
 
-        var fluxoDoArquivo = new FileStream(enderecoArquivo, FileMode.Open);
-        var buffer = new byte[1024]; //1KB
-        
-
-        while(numBytesLidos != 0)
+        using (var fluxoDoArquivo = new FileStream(enderecoArquivo, FileMode.Open))
         {
 
-            numBytesLidos = fluxoDoArquivo.Read(buffer, 0, 1024);
-            EscreverBuffer(buffer);
+            var numBytesLidos = -1;
 
+            var buffer = new byte[1024]; //1KB
+        
+
+            while(numBytesLidos != 0)
+            {
+
+                numBytesLidos = fluxoDoArquivo.Read(buffer, 0, 1024);
+                Console.WriteLine($"Bytes lidos: {numBytesLidos} ");
+                EscreverBuffer(buffer, numBytesLidos);
+
+            }
+
+            fluxoDoArquivo.Close();
+
+            Console.ReadLine();
         }
-
-        Console.ReadLine();
     }
 
-    static void EscreverBuffer(byte[] buffer)
+    static void EscreverBuffer(byte[] buffer, int bytesLidos)
     {
         var utf8 = new UTF8Encoding();
 
-        var texto = utf8.GetString(buffer);
+        var texto = utf8.GetString(buffer, 0, bytesLidos);
+        
+        //public virutal string GetString(byte[]) bytes, int index, int count);
         Console.WriteLine(texto);
         /*foreach(var meuByte in buffer)
         {
