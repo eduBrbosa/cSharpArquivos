@@ -30,7 +30,6 @@ partial class Program
             escritor.Write("456,65465,456.0,Pedro");
         }
 
-
     }
 
 }
